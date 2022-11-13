@@ -24,7 +24,7 @@ int main(int argc,char** argv){
 	ecrire_image(I);
 
 	supprimer_image(&I);
-	//Affiche a nouveau l'image pour verifier qu'elle a bien ete supprimee
+
 	ecrire_image(I);
 
 	return 0;
