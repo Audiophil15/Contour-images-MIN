@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"image_pbm.h"
+#include "geometrie2D.h"
 #include "TTVpoint.h"
 
 TTV_Point creer_TTV_Point_vide(){
@@ -75,7 +76,7 @@ void enregistrer_TTV_Point_EPS(char* nomDeFichier, Image I, TTV_Point ContourTab
 		if (I.H<I.L){
 			dilatation = (int)(1000/I.L);
 		} else {
-			dilatation = (int)(1000/I.H);
+			dilatation = (int)(600/I.H);
 		}
 	}
 	int i;

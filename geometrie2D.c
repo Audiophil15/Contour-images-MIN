@@ -1,4 +1,5 @@
 #include "geometrie2D.h"
+#include "shapeSimplification.h"
 #include <math.h>
 
 Point set_point(double x, double y){
@@ -15,7 +16,7 @@ Point produit_point(double a, Point A){
 }
 
 Vecteur vect_bipoint(Point A, Point B){
-	Vecteur V = {B.x - A.x, B.y - A.y};
+	Vecteur V={B.x-A.x, B.y - A.y};
 	return V;
 }
 
@@ -52,7 +53,8 @@ double distance_point_segment(Point P, Point A, Point B){
 		return norme_vecteur(vectAP);
 	}
 	if (lambda<=1){
-		return distance_points(set_point(add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).x, add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).y), P);
+		double x = distance_points(set_point(add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).x, add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).y), P);
+		return x;
 	}
 	return distance_points(B, P);
 }

@@ -31,4 +31,6 @@ void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab);
 
 void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture);
 
+void enregistrer_TTV_Contour_Bezier(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture);
+
 #endif

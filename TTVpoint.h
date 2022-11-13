@@ -4,7 +4,6 @@
 #include "geometrie2D.h"
 #include "image_pbm.h"
 
-
 typedef unsigned int UINT;
 
 typedef struct TTV_Point_{

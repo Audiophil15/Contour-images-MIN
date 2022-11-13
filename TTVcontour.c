@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"image_pbm.h"
+#include "geometrie2D.h"
 #include "TTVcontour.h"
 #include "TTVpoint.h"
 
@@ -81,17 +82,25 @@ void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
 
 
 void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
-	#define RESOLUTION 20
+	//On dilate ou retrecit l'image selon sa taille pour améliorer son affichage
+	int dilatation = 1;
+	if (I.H < 400 || I.L < 400){
+		if (I.H<I.L){
+			dilatation = (int)(1000/I.L);
+		} else {
+			dilatation = (int)(1000/I.H);
+		}
+	}
 	int i, j;
 
 	FILE * f = fopen(nomDeFichier, "w");
 	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
-	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*RESOLUTION+25, (I.H)*RESOLUTION+25);
+	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*dilatation+25, (I.H)*dilatation+25);
 
 	for (i=0; i<ContourTab.nb; i++){
-		fprintf(f, "%f %f moveto\n", ContourTab.tab[i].tab[0].x*RESOLUTION, (I.H-ContourTab.tab[i].tab[0].y)*RESOLUTION);
+		fprintf(f, "%f %f moveto\n", ContourTab.tab[i].tab[0].x*dilatation, (I.H-ContourTab.tab[i].tab[0].y)*dilatation);
 		for (j=1; j<ContourTab.tab[i].nb ; j++){
-			fprintf(f, "%f %f lineto\n", (ContourTab.tab[i].tab[j].x)*RESOLUTION, (I.H-ContourTab.tab[i].tab[j].y)*RESOLUTION);
+			fprintf(f, "%f %f lineto\n", (ContourTab.tab[i].tab[j].x)*dilatation, (I.H-ContourTab.tab[i].tab[j].y)*dilatation);
 		}
 		fprintf(f, "\n");
 	}
@@ -106,11 +115,53 @@ void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour Contou
 	if (ModeEcriture == 'P'){
 		for (j=0; j<ContourTab.nb; j++){
 			for (i=1; i<ContourTab.tab[j].nb; i++){
-				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[i].y)*RESOLUTION);
+				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*dilatation, (I.H-ContourTab.tab[j].tab[i].y)*dilatation);
 			}
 		}
 	}
 
 	fprintf(f, "\nshowpage\n");
-	fprintf(f, "Bonjour\n");
+}
+
+void enregistrer_TTV_Contour_Bezier(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
+	//On dilate ou retrecit l'image selon sa taille pour améliorer son affichage
+	int dilatation = 1;
+	if (I.H < 400 || I.L < 400){
+		if (I.H<I.L){
+			dilatation = (int)(1000/I.L);
+		} else {
+			dilatation = (int)(600/I.H);
+		}
+	}
+	int i, j;
+
+	FILE * f = fopen(nomDeFichier, "w");
+	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
+	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*dilatation+25, (I.H)*dilatation+25);
+
+	for (i=0; i<ContourTab.nb; i++){
+		fprintf(f, "%f %f moveto\n", ContourTab.tab[i].tab[0].x*dilatation, (I.H-ContourTab.tab[i].tab[0].y)*dilatation);
+		for (j=0; j<ContourTab.tab[i].nb ; j+=4){
+			fprintf(f, "%f %f %f %f %f %f curveto\n", (ContourTab.tab[i].tab[j+1].x)*dilatation, (I.H-ContourTab.tab[i].tab[j+1].y)*dilatation, (ContourTab.tab[i].tab[j+2].x)*dilatation, (I.H-ContourTab.tab[i].tab[j+2].y)*dilatation, (ContourTab.tab[i].tab[j+3].x)*dilatation, (I.H-ContourTab.tab[i].tab[j+3].y)*dilatation);
+		}
+		fprintf(f, "\n");
+	}
+
+	fprintf(f, "0.5 0.85 0.5 setrgbcolor\n");
+	if (ModeEcriture == 'F'){
+		fprintf(f, "fill\n");
+	} else {
+		fprintf(f, "stroke\n");
+	}
+
+	if (ModeEcriture == 'P'){
+		for (j=0; j<ContourTab.nb; j++){
+			for (i=0; i<ContourTab.tab[j].nb; i+=4){
+				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*dilatation, (I.H-ContourTab.tab[j].tab[i].y)*dilatation);
+				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i+3].x*dilatation, (I.H-ContourTab.tab[j].tab[i+3].y)*dilatation);
+			}
+		}
+	}
+
+	fprintf(f, "\nshowpage\n");
 }

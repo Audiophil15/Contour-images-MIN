@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "TTVpoint.h"
+#include "geometrie2D.h"
 #include "shapeTools.h"
 #include "image_pbm.h"
-#include "geometrie2D.h"
-#include "TTVpoint.h"
 #include "TTVcontour.h"
 #include "shapeSimplification.h"
 
 int main(int argc, char *argv[]){
 
-	if (argc != 8){
-		printf("Usage : programme image.pbm sortie.contour sortie.eps optionEPS sortieSegments.eps optionEPS seuil\n");
+	if (argc != 12){
+		printf("Usage : programme image.pbm sortie.contour sortie.eps optionEPS sortieSegments.eps optionEPS sortieBezier2.eps optionEPS sortieBezier3.eps optionEPS seuil\n");
 		return -1;
 	}
 
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]){
 		orientation = nouvelleOrientation(image, position, orientation);
 
 		if((position.x == positionInitiale.x && position.y == positionInitiale.y && orientation == Est)){
+			points_Contour = memoriserPosition(position, points_Contour);
 			tabContours = ajouter_element_TTV_Contour(tabContours, points_Contour);
 			// On stocke le tableau de points et on recommence avec un nouveau
 			points_Contour = creer_TTV_Point_vide();
@@ -58,15 +60,48 @@ int main(int argc, char *argv[]){
 	enregistrer_TTV_Contour(argv[2], tabContours);
 	enregistrer_TTV_Contour_EPS(argv[3], image, tabContours, argv[4][0]); //[4][0] car on a un probleme de liste/type sinon
 
-	int i;
-
+	int i, j;
+	double seuil;
+	sscanf(argv[11], "%lf", &seuil);
+	
 	TTV_Contour tabContoursSim = creer_TTV_Contour_vide();
 	for (i=0; i < tabContours.nb; i++){
-		tabContoursSim = ajouter_element_TTV_Contour(tabContoursSim, simplification_segments(tabContours.tab[i], 0, tabContours.tab[i].nb-1, argv[7][0]-'0'));
+		tabContoursSim = ajouter_element_TTV_Contour(tabContoursSim, supprimerDoublons(simplification_segments(tabContours.tab[i], 0, tabContours.tab[i].nb-1, seuil)));
 	}
-	tabContoursSim.tab[0] = supprimerDoublons(tabContoursSim.tab[0]);
 
 	enregistrer_TTV_Contour_EPS(argv[5], image, tabContoursSim, argv[6][0]);
+
+	// Simplification en courbes de Bezier de degre 2
+	TTV_Contour contourBezier = creer_TTV_Contour_vide();
+	TTV_Point tabTemp = creer_TTV_Point_vide();
+	for (i=0; i<tabContours.nb; i++){
+		tabTemp = simplification_bezier_2(tabContours.tab[i], 0, tabContours.tab[i].nb-1, seuil);
+		tabTemp = contour_bezier2to3(tabTemp);
+		contourBezier = ajouter_element_TTV_Contour(contourBezier, tabTemp);
+	}
+	int sumCourbes = 0;
+	for (i=0; i<contourBezier.nb; i++){
+		sumCourbes += contourBezier.tab[i].nb/4;
+	}
+	printf("%d courbes de Bezier degre 2\n", sumCourbes);
+	enregistrer_TTV_Contour_Bezier(argv[7], image, contourBezier, argv[8][0]);
+
+	// Simplification en courbes de Bezier de degre 3
+	TTV_Contour contourBezier3 = creer_TTV_Contour_vide();
+	for (i=0; i<tabContours.nb; i++){
+		tabTemp = simplification_bezier_3(tabContours.tab[i], 0, tabContours.tab[i].nb-1, seuil);
+		// for (j=0; j<tabTemp.nb; j++){
+		// 	printf("= %f, %f\n", tabTemp.tab[j].x, tabTemp.tab[j].y);
+		// }
+		contourBezier3 = ajouter_element_TTV_Contour(contourBezier3, tabTemp);
+	}
+	int sumCourbes3 = 0;
+	for (i=0; i<contourBezier3.nb; i++){
+		sumCourbes3 += contourBezier3.tab[i].nb/4;
+	}
+	printf("%d courbes de Bezier degre 3\n", sumCourbes3);
+	enregistrer_TTV_Contour_Bezier(argv[9], image, contourBezier3, argv[10][0]);
+	
 
 	for (i=0; i<tabContours.nb; i++){
 		nbPointsTotal += tabContours.tab[i].nb;
@@ -77,12 +112,14 @@ int main(int argc, char *argv[]){
 	}
 	printf("Fait : %d points de contour enregistres.\n", nbPointsTotal);
 	printf("Simplification : %d segments initiaux, %d segments simplifies\n", nbPointsTotal-tabContours.nb, nbPointsSimplifies-tabContoursSim.nb);
-	printf("Premier point enregistre : %.1f, %.1f\nDernier point enregistre : %.1f, %.1f\n", positionInitiale.x, positionInitiale.y, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].x, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].y);
+	printf("Premier point enregistre : %.1f, %.1f\nDernier point enregistre : %.1f, %.1f\n", tabContours.tab[0].tab[0].x, tabContours.tab[0].tab[0].y, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].x, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].y);
 
 	supprimer_image(&masque);
 	supprimer_image(&image);
 	supprimer_TTV_Point(&points_Contour);
 	supprimer_TTV_Contour(&tabContours);
+	supprimer_TTV_Contour(&tabContoursSim);
+	supprimer_TTV_Contour(&contourBezier);
 
 	return 0;
 }

@@ -5,7 +5,7 @@
 # utilisation des variables internes $< $@ $*
 # $@ : correspond au nom de la cible
 # $< : correspond au nom de la premiere dependance
-# $^ : correspond à toutes les dépendances
+# $^ : correspond ï¿½ toutes les dï¿½pendances
 # $* : correspond au nom du fichier sans extension
 #       (dans les regles generiques uniquement)
 #############################################################################
@@ -27,7 +27,7 @@ INCDIR = .
 # chemin d'acces aux librairies (binaires)
 LIBDIR = .
 
-# options pour l'édition des liens
+# options pour l'ï¿½dition des liens
 LDOPTS = -L$(LIBDIR) -lm
 
 # options pour la recherche des fichiers .o et .h
@@ -37,7 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = Contour dist_p_vect_test
+EXECUTABLES = Contour bezier2test
 
 
 #############################################################################
@@ -45,7 +45,7 @@ EXECUTABLES = Contour dist_p_vect_test
 #############################################################################
 
 ########################################################
-# la règle par défaut
+# la rï¿½gle par dï¿½faut
 all : $(EXECUTABLES)
 
 ########################################################
@@ -70,14 +70,15 @@ image_pbm.o : image_pbm.c image_pbm.h types_macros.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVcontour.h
+bezier2test.o : bezier2test.c shapeTools.h shapeSimplification.h geometrie2D.h TTVpoint.h TTVcontour.h
+	$(CC) -c $(COMPILOPTS) $<
+
+Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVcontour.h shapeSimplification.h
 	$(CC) -c $(COMPILOPTS) $<
 
 TTVpoint.o : geometrie2D.h
 
 shapeSimplification.o : geometrie2D.h TTVcontour.h TTVpoint.h
-
-dist_p_vect_test.o : geometrie2D.h
 
 ########################################################
 # regles explicites de creation des executables
@@ -85,9 +86,12 @@ dist_p_vect_test.o : geometrie2D.h
 Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o shapeSimplification.o
 	$(CC) $^ $(LDOPTS) -o $@
 
-dist_p_vect_test : dist_p_vect_test.o geometrie2D.o
+bezier2test : bezier2test.o geometrie2D.o TTVpoint.o TTVcontour.o shapeSimplification.o
 	$(CC) $^ $(LDOPTS) -o $@
 
-# regle pour "nettoyer" le répertoire
+# regle pour "nettoyer" le rï¿½pertoire
 clean:
 	rm -fR $(EXECUTABLES) *.o
+
+bclean :
+	rm -f ../../Bezier/*.eps
