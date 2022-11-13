@@ -24,6 +24,7 @@ int main(int argc, char *argv[]){
 	Point position = positionInitiale;
 	TTV_Point points_Contour = creer_TTV_Point_vide();
 	TTV_Contour tabContours = creer_TTV_Contour_vide();
+	int nbPointsTotal=0;
 
 	int flag = 1;
 	// On commence l'enregistrement du contour ici
@@ -36,7 +37,6 @@ int main(int argc, char *argv[]){
 		orientation = nouvelleOrientation(image, position, orientation);
 
 		if((position.x == positionInitiale.x && position.y == positionInitiale.y && orientation == Est)){
-			points_Contour = memoriserPosition(position, points_Contour);
 			tabContours = ajouter_element_TTV_Contour(tabContours, points_Contour);
 			// On stocke le tableau de points et on recommence avec un nouveau
 			points_Contour = creer_TTV_Point_vide();
@@ -68,7 +68,6 @@ int main(int argc, char *argv[]){
 
 	enregistrer_TTV_Contour_EPS(argv[5], image, tabContoursSim, argv[6][0]);
 
-	int nbPointsTotal = 0;
 	for (i=0; i<tabContours.nb; i++){
 		nbPointsTotal += tabContours.tab[i].nb;
 	}
@@ -77,7 +76,7 @@ int main(int argc, char *argv[]){
 		nbPointsSimplifies += tabContoursSim.tab[i].nb;
 	}
 	printf("Fait : %d points de contour enregistres.\n", nbPointsTotal);
-	printf("Simplification : %d segments initiaux, %d segments simplifies\n", nbPointsTotal-tabContours.nb, nbPointsSimplifies-tabContoursSim.nb);	
+	printf("Simplification : %d segments initiaux, %d segments simplifies\n", nbPointsTotal-tabContours.nb, nbPointsSimplifies-tabContoursSim.nb);
 	printf("Premier point enregistre : %.1f, %.1f\nDernier point enregistre : %.1f, %.1f\n", positionInitiale.x, positionInitiale.y, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].x, tabContours.tab[tabContours.nb-1].tab[tabContours.tab[tabContours.nb-1].nb-1].y);
 
 	supprimer_image(&masque);

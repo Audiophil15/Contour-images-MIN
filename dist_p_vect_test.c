@@ -21,7 +21,6 @@ int main(){
 	scanf("%lf %lf", &x, &y);
 	Point C3 = set_point(x, y);
 
-	printf("Produit scalaire entre AB et AC1 vaut 0 : %d\n", 0==produit_scalaire(vect_bipoint(A, B), vect_bipoint(A, C1)));
 	printf("Distance a AB de :\nC1 : %f\nC2 : %f\nC3 : %f\n", distance_point_segment(C1,A,B), distance_point_segment(C2,A,B), distance_point_segment(C3,A,B));
 	printf("distance de C1 au segment AA : %f\n", distance_point_segment(C1,A,A));
 	return 0;
