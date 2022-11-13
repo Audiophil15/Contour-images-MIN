@@ -36,3 +36,19 @@ double norme_vecteur(Vecteur V){
 double distance_points(Point P1, Point P2){
 	return sqrt((P1.x-P2.x)*(P1.x-P2.x) + (P1.y-P2.y)*(P1.y-P2.y));
 }
+
+double distance_point_segment(Point P, Point A, Point B){
+	if (A.x == B.x && A.y == B.y){
+		return distance_points(A, P);
+	}
+	double lambda;
+	Vecteur vectAB = vect_bipoint(A, B), vectAP = vect_bipoint(A, P);
+	lambda = (produit_scalaire(vectAB, vectAP)/produit_scalaire(vectAB, vectAB));
+	if (lambda<0){
+		return norme_vecteur(vectAP);
+	}
+	if (lambda<=1){
+		return distance_points(set_point(add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).x, add_vect(produit_vecteur(lambda, vectAB), vect_bipoint(set_point(0,0), A)).y), P);
+	}
+	return distance_points(B, P);
+}

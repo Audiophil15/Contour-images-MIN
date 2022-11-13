@@ -28,4 +28,6 @@ double norme_vecteur(Vecteur V);
 
 double distance_points(Point P1, Point P2);
 
+double distance_point_segment(Point P, Point A, Point B);
+
 #endif // !GEOMETRIE2D_H

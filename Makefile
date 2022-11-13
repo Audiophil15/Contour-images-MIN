@@ -37,7 +37,8 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = Contour
+EXECUTABLES = Contour dist_p_vect_test
+
 
 #############################################################################
 # definition des regles
@@ -69,27 +70,20 @@ image_pbm.o : image_pbm.c image_pbm.h types_macros.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-
-testShapeTools.o : testShapeTools.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Compilation du module test_shape_tools"
-	@echo "---------------------------------------------"
-	$(CC) -c $(COMPILOPTS) $<
-
 Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVcontour.h
 	$(CC) -c $(COMPILOPTS) $<
 
 TTVpoint.o : geometrie2D.h
 
+dist_p_vect_test.o : geometrie2D.h
+
 ########################################################
 # regles explicites de creation des executables
 
-
-testShapeTools : testShapeTools.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o
+Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o
 	$(CC) $^ $(LDOPTS) -o $@
 
-Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o
+dist_p_vect_test : dist_p_vect_test.o geometrie2D.o
 	$(CC) $^ $(LDOPTS) -o $@
 
 # regle pour "nettoyer" le répertoire
