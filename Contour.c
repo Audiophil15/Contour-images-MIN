@@ -3,7 +3,7 @@
 #include "shapeTools.h"
 #include "image_pbm.h"
 #include "geometrie2D.h"
-#include "TTVcontour.h"
+#include "TTVpoint.h"
 
 
 int main(int argc, char *argv[]){
@@ -28,6 +28,7 @@ int main(int argc, char *argv[]){
 	}
 	points_Contour = memoriserPosition(position, points_Contour);
 	enregistrer_TTV_Point(argv[2], points_Contour);
+	enregistrer_TTV_Point_EPS(argv[3], image, points_Contour, argv[4][0]);
 	printf("Fait : %d points de contour enregistres.\n", points_Contour.nb);
 	printf("Premier point enregistre : %.1f, %.1f\nDernier point enregistre : %.1f, %.1f\n", positionInitiale.x, positionInitiale.y, points_Contour.tab[points_Contour.nb-1].x, points_Contour.tab[points_Contour.nb-1].y);
 	return 0;

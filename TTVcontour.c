@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include "TTVcontour.h"
+#include"image_pbm.h"
+#include "TTVpoint.h"
 
 TTV_Point creer_TTV_Point_vide(){
 	TTV_Point T;
@@ -66,4 +67,32 @@ void enregistrer_TTV_Point(char* nomDeFichier, TTV_Point ContourTab){
 	for (i = 0; i<ContourTab.nb; i++){
 		fprintf(f, "%.1f %.1f\n", ContourTab.tab[i].x, ContourTab.tab[i].y);
 	}
+}
+
+void enregistrer_TTV_Point_EPS(char* nomDeFichier, Image I, TTV_Point ContourTab, char ModeEcriture){
+	#define RESOLUTION 100
+	int i;
+	FILE* f = fopen(nomDeFichier, "w");
+	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
+	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*RESOLUTION+25, (I.H)*RESOLUTION+25);
+	// On place le point de depart avec moveto
+	fprintf(f, "%f %f moveto\n\n", ContourTab.tab[0].x*RESOLUTION, (I.H-ContourTab.tab[0].y)*RESOLUTION);
+	// On place tous les points successivements avec un for, on place les points en options avec un if
+	for (i=1; i<ContourTab.nb; i++){
+		fprintf(f, "%f %f lineto\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+	}
+	fprintf(f, "0.5 0.85 0.5 setrgbcolor\n");
+	if (ModeEcriture == 'F'){
+		fprintf(f, "fill\n");
+	} else {
+		fprintf(f, "stroke\n");
+	}
+
+	if (ModeEcriture == 'P'){
+		for (i=1; i<ContourTab.nb; i++){
+			fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+		}
+	}
+
+	fprintf(f, "\nshowpage\n");
 }

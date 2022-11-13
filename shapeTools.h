@@ -3,7 +3,7 @@
 
 #include "image_pbm.h"
 #include "geometrie2D.h"
-#include "TTVcontour.h"
+#include "TTVpoint.h"
 
 enum Orientation {
 	Nord, Est, Sud, Ouest};

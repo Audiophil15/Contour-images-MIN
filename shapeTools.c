@@ -1,7 +1,7 @@
 #include "shapeTools.h"
 #include "image_pbm.h"
 #include "geometrie2D.h"
-#include "TTVcontour.h"
+#include "TTVpoint.h"
 
 /* macro donnant l'indice d'un pixel de coordonnées (_x,_y) de l'image _I */
 #define INDICE_PIXEL(_I,_x,_y) ((_x)-1)+(_I).L*((_y)-1)
