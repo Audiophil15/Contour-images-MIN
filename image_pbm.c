@@ -153,7 +153,7 @@ Image lire_fichier_image(char *nom_f)
 		}
 
 	//Gere le cas ou il y a trop de valeurs
-	if (fscanf(f, "%d", &i) != 0){
+	if (fscanf(f, "%d", &i) != EOF){
 		printf("Warning : L'image n'a pas ete creee totalement\n");
 	}
 

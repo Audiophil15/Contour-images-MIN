@@ -37,7 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image_pbm test_geom2d
+EXECUTABLES = test_image_pbm testShapeTools
 
 
 #############################################################################
@@ -77,10 +77,14 @@ test_image_pbm.o : test_image_pbm.c image_pbm.h types_macros.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-test_geom2d.o : test_geom2d.c geometrie2D.h
+testShapeTools.o : testShapeTools.c shapeTools.h image_pbm.h geometrie2D.h
+	@echo ""
+	@echo "---------------------------------------------"
+	@echo "Compilation du module test_shape_tools"
+	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-
+Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h
 
 ########################################################
 # regles explicites de creation des executables
@@ -92,9 +96,11 @@ test_image_pbm : test_image_pbm.o image_pbm.o
 	@echo "---------------------------------------------"
 	$(CC) $^ $(LDOPTS) -o $@
 
-test_geom2d : test_geom2d.o geometrie2D.o
+testShapeTools : testShapeTools.o image_pbm.o shapeTools.o geometrie2D.o
 	$(CC) $^ $(LDOPTS) -o $@
 
+Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o
+	$(CC) $^ $(LDOPTS) -o $@
 
 # regle pour "nettoyer" le répertoire
 clean:
