@@ -3,6 +3,8 @@
 #include "shapeTools.h"
 #include "image_pbm.h"
 #include "geometrie2D.h"
+#include "TTVcontour.h"
+
 
 int main(int argc, char *argv[]){
 
@@ -12,9 +14,11 @@ int main(int argc, char *argv[]){
 	Orientation orientation = Est;
 	Point positionInitiale = {premierPixelNoir.x-1, premierPixelNoir.y-1};
 	Point position = positionInitiale;
+	TTV_Point points_Contour = creer_TTV_Point_vide();
+
 	int flag = 1;
 	while (flag){
-		memoriserPosition(position);
+		points_Contour = memoriserPosition(position, points_Contour);
 		position = avancer(orientation, position);
 		orientation = nouvelleOrientation(image, position, orientation);
 
@@ -22,7 +26,9 @@ int main(int argc, char *argv[]){
 			flag = 0;
 		}
 	}
-	memoriserPosition(position);
-
+	points_Contour = memoriserPosition(position, points_Contour);
+	enregistrer_TTV_Point(argv[2], points_Contour);
+	printf("Fait : %d points de contour enregistres.\n", points_Contour.nb);
+	printf("Premier point enregistre : %.1f, %.1f\nDernier point enregistre : %.1f, %.1f\n", positionInitiale.x, positionInitiale.y, points_Contour.tab[points_Contour.nb-1].x, points_Contour.tab[points_Contour.nb-1].y);
 	return 0;
 }

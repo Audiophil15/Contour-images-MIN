@@ -1,0 +1,10 @@
+C-caractere.pbm.contour : 7,9; 41 points
+C-chat.pbm.contour : 250,140; 881 points
+C-cop.pbm.contour : 700,720; 5387 points
+C-elephant.pbm.contour : 800,700; 5345 points
+C-gymnaste.pbm.contour : 1056,1647; 8785 points
+C-image_ex_poly.pbm.contour : 4,4; 19 points
+C-labyrinthe.pbm.contour : 221,201; 44001 points
+C-lettreZ.pbm.contour : 600,1029; 9397 points
+C-map401.pbm.contour : 830,300; 8073 points
+C-tete.pbm.contour : 1252,1252; 8137 points

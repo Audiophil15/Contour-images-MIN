@@ -11,7 +11,7 @@ int main(int argc, char ** argv){
 	printf("Coordonnees premier pixel noir : %f, %f\n", pixelNoir.x, pixelNoir.y);
 	memoriserPosition(pixelNoir);
 	sens = nouvelleOrientation(I, pixelNoir, sens);
-	printf("Orientation : %d\n", sens);
+	printf("Orientation : %d", sens);
 	Point newPoint = avancer(sens, pixelNoir);
 	memoriserPosition(newPoint);
 	return 0;

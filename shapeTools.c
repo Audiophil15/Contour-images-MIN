@@ -1,6 +1,7 @@
 #include "shapeTools.h"
-#include "../Tache1/image_pbm.h"
-#include "../Tache2/geometrie2D.h"
+#include "image_pbm.h"
+#include "geometrie2D.h"
+#include "TTVcontour.h"
 
 /* macro donnant l'indice d'un pixel de coordonnées (_x,_y) de l'image _I */
 #define INDICE_PIXEL(_I,_x,_y) ((_x)-1)+(_I).L*((_y)-1)
@@ -24,17 +25,17 @@ Orientation nouvelleOrientation(Image image, Point bordPixelNoir, Orientation or
 	Pixel pG, pD;
 	// On donne la couleur des pixels gauche et droite par rapport au point donne, en fonction de l'orientation
 	if (orientation == Nord){
-		pG = get_pixel_image(image, bordPixelNoir.x-1, bordPixelNoir.y-1);
-		pD = get_pixel_image(image, bordPixelNoir.x, bordPixelNoir.y-1);
+		pG = get_pixel_image(image, bordPixelNoir.x, bordPixelNoir.y);
+		pD = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y);
 	} else if (orientation == Sud){
 		pG = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y+1);
 		pD = get_pixel_image(image, bordPixelNoir.x, bordPixelNoir.y+1);
 	} else if (orientation == Est){
-		pG = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y-1);
-		pD = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y);
+		pG = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y);
+		pD = get_pixel_image(image, bordPixelNoir.x+1, bordPixelNoir.y+1);
 	} else {
-		pG = get_pixel_image(image, bordPixelNoir.x-1, bordPixelNoir.y+1);
-		pD = get_pixel_image(image, bordPixelNoir.x-1, bordPixelNoir.y);
+		pG = get_pixel_image(image, bordPixelNoir.x, bordPixelNoir.y+1);
+		pD = get_pixel_image(image, bordPixelNoir.x, bordPixelNoir.y);
 	}
 
 	// Si le pixel devant a gauche est noir, on sait tout de suite qu'on tourne a gauche
@@ -77,6 +78,7 @@ Point avancer(Orientation orientation, Point anciennesCoordonnees){
 	return nouveauPoint;
 }
 
-void memoriserPosition(Point pointContour){
-	printf("point de contour : %f, %f\n", pointContour.x, pointContour.y);
+TTV_Point memoriserPosition(Point pointContour, TTV_Point Tab_Contour){
+	Tab_Contour = ajouter_element_TTV_Point(Tab_Contour, pointContour);
+	return Tab_Contour;
 }
