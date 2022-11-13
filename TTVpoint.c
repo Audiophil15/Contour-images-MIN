@@ -1,38 +1,35 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"image_pbm.h"
-#include "TTVcontour.h"
 #include "TTVpoint.h"
 
-TTV_Contour creer_TTV_Contour_vide(){
-	TTV_Contour T;
+TTV_Point creer_TTV_Point_vide(){
+	TTV_Point T;
 	T.nb = 0;
 	T.cap = 10;
-	T.taille_elt = sizeof(TTV_Point);
-	T.tab = (TTV_Point*)malloc(sizeof(TTV_Point)*T.cap);
-	T.tab->tab = (Point*)malloc(sizeof(Point)*T.tab->cap);
-
+	T.taille_elt = sizeof(Point);
+	T.tab = (Point*)malloc(sizeof(Point)*T.cap);
 	if(T.tab == NULL){
-		printf("Allocation du TTV_Contour impossible\n");
+		printf("Allocation du TTV_Point impossible\n");
 		exit(1);
 	}
 	return T;
 }
 
-TTV_Point element_TTV_Contour(TTV_Contour T, UINT i){
+Point element_TTV_Point(TTV_Point T, UINT i){
 	return T.tab[i];
 }
 
-UINT nb_elements_TTV_Contour(TTV_Contour T){
+UINT nb_elements_TTV_Point(TTV_Point T){
 	return T.nb;
 }
 
-TTV_Contour ajouter_element_TTV_Contour(TTV_Contour T, TTV_Point e){
+TTV_Point ajouter_element_TTV_Point(TTV_Point T, Point e){
 	if (T.nb == T.cap){
 		T.cap *= 2;
 		T.tab = realloc(T.tab, T.taille_elt*T.cap);
 		if (T.tab == NULL){
-			printf("Reallocatioin du TTV_Contour impossible\n");
+			printf("Reallocatioin du TTV_Point impossible\n");
 			exit(1);
 		}
 	}
@@ -40,13 +37,13 @@ TTV_Contour ajouter_element_TTV_Contour(TTV_Contour T, TTV_Point e){
 	return T;
 }
 
-TTV_Contour concatener_TTV_Contour(TTV_Contour T1, TTV_Contour T2){
+TTV_Point concatener_TTV_Point(TTV_Point T1, TTV_Point T2){
 	UINT i;
 	if (T1.nb + T2.cap > T1.cap){
 		T1.cap = T1.nb + T2.nb;
 		T1.tab = realloc(T1.tab, T1.taille_elt*T1.cap);
 		if (T1.tab == NULL){
-			printf("Reallocation du TTV_Contour impossible\n");
+			printf("Reallocation du TTV_Point impossible\n");
 			exit(1);
 		}
 	}
@@ -57,27 +54,22 @@ TTV_Contour concatener_TTV_Contour(TTV_Contour T1, TTV_Contour T2){
 	return T1;
 }
 
-void supprimer_TTV_Contour(TTV_Contour *ptr_T){
+void supprimer_TTV_Point(TTV_Point *ptr_T){
 	free(ptr_T->tab);
 }
 
 // Stocke les points enregistres dans un TTV dans un fichier.
-void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
-	int i,j;
+void enregistrer_TTV_Point(char* nomDeFichier, TTV_Point ContourTab){
+	int i;
 	FILE* f = fopen(nomDeFichier, "w+");
 	fprintf(f, "1\n\n");
 	fprintf(f, "%d\n", ContourTab.nb);
-	// Ici faire un for dns un for pour recuperer les coordonnees pour chaque contour
-	for (j=0; j< ContourTab.nb; j++){
-		fprintf(f, "%d", Contour.tab[j].nb);
-		for (i = 0; i<ContourTab.tab[j].nb; i++){
-			fprintf(f, "%.1f %.1f\n", ContourTab.tab[j].tab[i].x, ContourTab.tab[j].tab[i].y);
-		}
-
+	for (i = 0; i<ContourTab.nb; i++){
+		fprintf(f, "%.1f %.1f\n", ContourTab.tab[i].x, ContourTab.tab[i].y);
 	}
 }
 
-void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
+void enregistrer_TTV_Point_EPS(char* nomDeFichier, Image I, TTV_Point ContourTab, char ModeEcriture){
 	#define RESOLUTION 100
 	int i;
 	FILE* f = fopen(nomDeFichier, "w");

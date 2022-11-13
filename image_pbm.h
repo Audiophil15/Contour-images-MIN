@@ -1,4 +1,4 @@
-/****************************************************************************** 
+/******************************************************************************
   Interface du module image_pbm
 ******************************************************************************/
 
@@ -7,19 +7,19 @@
 
 #include "types_macros.h"
 
-/* 
+/*
  Type enuméré Pixel avec BLANC=0 et NOIR=1
  */
 typedef enum {BLANC=0,NOIR=1} Pixel;
 
-/* 
+/*
  Type Image
  */
 typedef struct Image_
 {
 	UINT L,H; /* largeur et hauteur de l'image */
 	Pixel* tab; /*  tableau de pixels */
-	/* le pixel d'abscisse x et d'ordonnée y avec 1<=x<=L et 1<=y<=H 
+	/* le pixel d'abscisse x et d'ordonnée y avec 1<=x<=L et 1<=y<=H
 	   est tab[x-1+L*(y-1)] */
 } Image;
 
@@ -44,5 +44,7 @@ Image lire_fichier_image(char *nom_f);
 
 /* écrire l'image I à l'écran */
 void ecrire_image(Image I);
+
+Image creer_image_masque(Image image);
 
 #endif /* _IMAGE_PBM_H_ */

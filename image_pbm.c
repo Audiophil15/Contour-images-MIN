@@ -181,3 +181,15 @@ void ecrire_image(Image I)
 	}
 
 }
+
+Image creer_image_masque(Image image){
+	Image masque = creer_image(image.L, image.H);
+	for (int i=0; i<image.L; i++){
+		for (int j=0; j<image.H; j++){
+			if (get_pixel_image(image, i, j)==NOIR && get_pixel_image(image, i, j-1)==BLANC){
+				masque.tab[INDICE_PIXEL(image,
+				i, j)] = NOIR;
+			}
+		}
+	}
+}
