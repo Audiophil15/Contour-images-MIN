@@ -18,8 +18,9 @@ Point trouverPremierPixelNoir(Image imagePBM, int x, int y){
 		i ++;
 	}
 	// Si on sort du while c'est qu'il n'y a pas de pixel noir
-	printf("Recherche de debut de contour : il n'y a pas de pixel noir.");
-	return Point noPoint={-1, -1};
+	printf("Erreur : il n'y a pas (ou plus) de pixel noir.\n");
+	Point noPoint={-1, -1};
+	return noPoint;
 }
 
 Orientation nouvelleOrientation(Image image, Point bordPixelNoir, Orientation orientation){

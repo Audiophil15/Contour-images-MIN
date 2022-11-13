@@ -84,7 +84,7 @@ testShapeTools.o : testShapeTools.c shapeTools.h image_pbm.h geometrie2D.h TTVpo
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h
+Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVcontour.h
 TTVpoint.o : geometrie2D.h
 
 ########################################################
@@ -100,7 +100,7 @@ test_image_pbm : test_image_pbm.o image_pbm.o
 testShapeTools : testShapeTools.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o
 	$(CC) $^ $(LDOPTS) -o $@
 
-Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o
+Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o
 	$(CC) $^ $(LDOPTS) -o $@
 
 # regle pour "nettoyer" le répertoire

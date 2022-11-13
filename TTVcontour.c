@@ -9,8 +9,7 @@ TTV_Contour creer_TTV_Contour_vide(){
 	T.nb = 0;
 	T.cap = 10;
 	T.taille_elt = sizeof(TTV_Point);
-	T.tab = (TTV_Point*)malloc(sizeof(TTV_Point)*T.cap);
-	T.tab->tab = (Point*)malloc(sizeof(Point)*T.tab->cap);
+	T.tab = (TTV_Point*)malloc(T.taille_elt*T.cap);
 
 	if(T.tab == NULL){
 		printf("Allocation du TTV_Contour impossible\n");
@@ -36,7 +35,7 @@ TTV_Contour ajouter_element_TTV_Contour(TTV_Contour T, TTV_Point e){
 			exit(1);
 		}
 	}
-	T.tab[T.nb++] = e;
+	T.tab[T.nb++] = e ;
 	return T;
 }
 
@@ -58,18 +57,20 @@ TTV_Contour concatener_TTV_Contour(TTV_Contour T1, TTV_Contour T2){
 }
 
 void supprimer_TTV_Contour(TTV_Contour *ptr_T){
-	free(ptr_T->tab);
+	int i;
+	for (i=0; i<ptr_T->nb; i++){
+		supprimer_TTV_Point(ptr_T->tab+i);
+	}
 }
 
 // Stocke les points enregistres dans un TTV dans un fichier.
 void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
 	int i,j;
 	FILE* f = fopen(nomDeFichier, "w+");
-	fprintf(f, "1\n\n");
-	fprintf(f, "%d\n", ContourTab.nb);
+	fprintf(f, "%d\n\n", ContourTab.nb);
 	// Ici faire un for dns un for pour recuperer les coordonnees pour chaque contour
 	for (j=0; j< ContourTab.nb; j++){
-		fprintf(f, "%d", Contour.tab[j].nb);
+		fprintf(f, "%d\n", ContourTab.tab[j].nb);
 		for (i = 0; i<ContourTab.tab[j].nb; i++){
 			fprintf(f, "%.1f %.1f\n", ContourTab.tab[j].tab[i].x, ContourTab.tab[j].tab[i].y);
 		}
@@ -77,6 +78,10 @@ void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
 	}
 }
 
+
+// Il faut changer les boucles pour ajouter le gestion du TTV_Contour a la place du TTV_point
+
+/*
 void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
 	#define RESOLUTION 100
 	int i;
@@ -104,3 +109,4 @@ void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour Contou
 
 	fprintf(f, "\nshowpage\n");
 }
+*/

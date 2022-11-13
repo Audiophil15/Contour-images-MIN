@@ -5,6 +5,8 @@
 #ifndef _IMAGE_PBM_H_
 #define _IMAGE_PBM_H_
 
+#define INDICE_PIXEL(_I,_x,_y) ((_x)-1)+(_I).L*((_y)-1)
+
 #include "types_macros.h"
 
 /*
