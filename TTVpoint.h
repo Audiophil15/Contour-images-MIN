@@ -2,6 +2,7 @@
 #define _TTV_POINT_H_
 
 #include "geometrie2D.h"
+#include "image_pbm.h"
 
 
 typedef unsigned int UINT;

@@ -75,12 +75,14 @@ Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVconto
 
 TTVpoint.o : geometrie2D.h
 
+shapeSimplification.o : geometrie2D.h TTVcontour.h TTVpoint.h
+
 dist_p_vect_test.o : geometrie2D.h
 
 ########################################################
 # regles explicites de creation des executables
 
-Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o
+Contour : Contour.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o TTVcontour.o shapeSimplification.o
 	$(CC) $^ $(LDOPTS) -o $@
 
 dist_p_vect_test : dist_p_vect_test.o geometrie2D.o

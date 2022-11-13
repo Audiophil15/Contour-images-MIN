@@ -70,16 +70,23 @@ void enregistrer_TTV_Point(char* nomDeFichier, TTV_Point ContourTab){
 }
 
 void enregistrer_TTV_Point_EPS(char* nomDeFichier, Image I, TTV_Point ContourTab, char ModeEcriture){
-	#define RESOLUTION 100
+	int dilatation = 1;
+	if (I.H < 400 || I.L < 400){
+		if (I.H<I.L){
+			dilatation = (int)(1000/I.L);
+		} else {
+			dilatation = (int)(1000/I.H);
+		}
+	}
 	int i;
 	FILE* f = fopen(nomDeFichier, "w");
 	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
-	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*RESOLUTION+25, (I.H)*RESOLUTION+25);
+	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*dilatation+25, (I.H)*dilatation+25);
 	// On place le point de depart avec moveto
-	fprintf(f, "%f %f moveto\n\n", ContourTab.tab[0].x*RESOLUTION, (I.H-ContourTab.tab[0].y)*RESOLUTION);
+	fprintf(f, "%f %f moveto\n\n", ContourTab.tab[0].x*dilatation, (I.H-ContourTab.tab[0].y)*dilatation);
 	// On place tous les points successivements avec un for, on place les points en options avec un if
 	for (i=1; i<ContourTab.nb; i++){
-		fprintf(f, "%f %f lineto\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+		fprintf(f, "%f %f lineto\n", ContourTab.tab[i].x*dilatation, (I.H-ContourTab.tab[i].y)*dilatation);
 	}
 	fprintf(f, "0.5 0.85 0.5 setrgbcolor\n");
 	if (ModeEcriture == 'F'){
@@ -90,7 +97,7 @@ void enregistrer_TTV_Point_EPS(char* nomDeFichier, Image I, TTV_Point ContourTab
 
 	if (ModeEcriture == 'P'){
 		for (i=1; i<ContourTab.nb; i++){
-			fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+			fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[i].x*dilatation, (I.H-ContourTab.tab[i].y)*dilatation);
 		}
 	}
 

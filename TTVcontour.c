@@ -81,22 +81,26 @@ void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
 
 
 void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
-	#define RESOLUTION 100
-	int i, j;
-	FILE* f = fopen(nomDeFichier, "w");
-	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
-	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*RESOLUTION+25, (I.H)*RESOLUTION+25);
+	int dilatation = 1;
+	if (I.H < 400 || I.L < 400){
+		if (I.H<I.L){
+			dilatation = (int)(1000/I.L);
+		} else {
+			dilatation = (int)(1000/I.H);
+		}
+	}	int i, j;
 
-	for (j=0; j<ContourTab.nb; j++){
-		// On place le point de depart avec moveto
-		fprintf(f, "%f %f moveto\n", ContourTab.tab[j].tab[0].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[0].y)*RESOLUTION);
-		// On place tous les points successivements avec un for, on place les points en options avec un if
-		for (i=1; i<ContourTab.tab[j].nb; i++){
-			fprintf(f, "%f %f lineto\n", ContourTab.tab[j].tab[i].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[i].y)*RESOLUTION);
+	FILE * f = fopen(nomDeFichier, "w");
+	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
+	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*dilatation+25, (I.H)*dilatation+25);
+
+	for (i=0; i<ContourTab.nb; i++){
+		fprintf(f, "%f %f moveto\n", ContourTab.tab[i].tab[0].x*dilatation, (I.H-ContourTab.tab[i].tab[0].y)*dilatation);
+		for (j=1; j<ContourTab.tab[i].nb ; j++){
+			fprintf(f, "%f %f lineto\n", (ContourTab.tab[i].tab[j].x)*dilatation, (I.H-ContourTab.tab[i].tab[j].y)*dilatation);
 		}
 		fprintf(f, "\n");
 	}
-
 
 	fprintf(f, "0.5 0.85 0.5 setrgbcolor\n");
 	if (ModeEcriture == 'F'){
@@ -108,10 +112,11 @@ void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour Contou
 	if (ModeEcriture == 'P'){
 		for (j=0; j<ContourTab.nb; j++){
 			for (i=1; i<ContourTab.tab[j].nb; i++){
-				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[i].y)*RESOLUTION);
+				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*dilatation, (I.H-ContourTab.tab[j].tab[i].y)*dilatation);
 			}
 		}
 	}
 
 	fprintf(f, "\nshowpage\n");
+	fprintf(f, "Bonjour\n");
 }

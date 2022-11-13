@@ -10,6 +10,10 @@ Point add_point(Point P1, Point P2){
 	return set_point(P1.x + P2.x, P1.y + P2.y);
 }
 
+Point produit_point(double a, Point A){
+	return set_point(A.x*a, A.y*a);
+}
+
 Vecteur vect_bipoint(Point A, Point B){
 	Vecteur V = {B.x - A.x, B.y - A.y};
 	return V;

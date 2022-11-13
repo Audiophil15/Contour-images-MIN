@@ -1,0 +1,35 @@
+image_poly_tache6.pbm :
+3 contours
+490 segments initiaux
+Seuil 1 : 52 segments
+Seuil 2 : 3 segments
+
+elephant-gotlib.pbm :
+313 contours
+115876 segments initiaux
+Seuil 1 : 8394 segments
+Seuil 2 : 6128 segments
+
+goudyini-A.pbm :
+258 contours
+73702 segments initiaux
+Seuil 1 : 5830 segments
+Seuil 2 : 4556 segments
+
+papillon2.pbm :
+140 contours
+18351 segments initiaux
+Seuil 1 : 2125 segments
+Seuil 2 : 1607 segments
+
+cheval.pbm :
+59 contours
+32060 segments initiaux
+Seuil 1 : 2605 segments
+Seuil 2 : 1877 segments
+
+JoaquimHock-LesArbres.pbm :
+543 contours
+231826 segments initiaux
+Seuil 1 : 27385 segments
+Seuil 2 : 19620 segments

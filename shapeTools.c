@@ -18,7 +18,7 @@ Point trouverPremierPixelNoir(Image imagePBM, int x, int y){
 		i ++;
 	}
 	// Si on sort du while c'est qu'il n'y a pas de pixel noir
-	printf("Erreur : il n'y a pas (ou plus) de pixel noir.\n");
+	printf("Fin : il n'y a pas (ou plus) de pixel noir.\n");
 	Point noPoint={-1, -1};
 	return noPoint;
 }
