@@ -1,0 +1,9 @@
+#!/bin/bash
+./Contour ../PBM/caractere2.pbm ../Contour/C-caractere2.contour ../EPS/E-caractere2.eps F ../Segments/S-caractere2-0.eps F ../Bezier/B-2-caractere2-0.eps F ../Bezier/B-3-caractere2-0.eps F 0
+./Contour ../PBM/caractere2.pbm ../Contour/C-caractere2.contour ../EPS/E-caractere2.eps F ../Segments/S-caractere2-1.eps F ../Bezier/B-2-caractere2-1.eps F ../Bezier/B-3-caractere2-1.eps F 1
+./Contour ../PBM/caractere2.pbm ../Contour/C-caractere2.contour ../EPS/E-caractere2.eps F ../Segments/S-caractere2-2.eps F ../Bezier/B-2-caractere2-2.eps F ../Bezier/B-3-caractere2-2.eps F 2
+gv ../Segments/S-caractere2-0.eps &
+gv ../Bezier/B-2-caractere2-1.eps &
+gv ../Bezier/B-3-caractere2-1.eps &
+gv ../Bezier/B-2-caractere2-2.eps &
+gv ../Bezier/B-3-caractere2-2.eps &

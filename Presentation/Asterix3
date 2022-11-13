@@ -1,0 +1,9 @@
+#!/bin/bash
+./Contour ../PBM/Asterix3.pbm ../Contour/C-Asterix3.contour ../EPS/E-Asterix3.eps F ../Segments/S-Asterix3-0.eps F ../Bezier/B-2-Asterix3-0.eps F ../Bezier/B-3-Asterix3-0.eps F 0
+./Contour ../PBM/Asterix3.pbm ../Contour/C-Asterix3.contour ../EPS/E-Asterix3.eps F ../Segments/S-Asterix3-5.eps F ../Bezier/B-2-Asterix3-5.eps F ../Bezier/B-3-Asterix3-5.eps F 5
+./Contour ../PBM/Asterix3.pbm ../Contour/C-Asterix3.contour ../EPS/E-Asterix3.eps F ../Segments/S-Asterix3-10.eps F ../Bezier/B-2-Asterix3-10.eps F ../Bezier/B-3-Asterix3-10.eps F 10
+gv ../Segments/S-Asterix3-0.eps &
+gv ../Bezier/B-2-Asterix3-5.eps &
+gv ../Bezier/B-3-Asterix3-5.eps &
+gv ../Bezier/B-2-Asterix3-10.eps &
+gv ../Bezier/B-3-Asterix3-10.eps &

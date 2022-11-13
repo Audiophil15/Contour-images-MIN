@@ -1,0 +1,4 @@
+#!/bin/bash
+cp run.sh ../Rapport/run.sh
+cp caractere2 ../Rapport/caractere2
+cp Asterix3 ../Rapport/Asterix3
