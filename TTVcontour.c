@@ -68,32 +68,36 @@ void enregistrer_TTV_Contour(char* nomDeFichier, TTV_Contour ContourTab){
 	int i,j;
 	FILE* f = fopen(nomDeFichier, "w+");
 	fprintf(f, "%d\n\n", ContourTab.nb);
-	// Ici faire un for dns un for pour recuperer les coordonnees pour chaque contour
 	for (j=0; j< ContourTab.nb; j++){
 		fprintf(f, "%d\n", ContourTab.tab[j].nb);
 		for (i = 0; i<ContourTab.tab[j].nb; i++){
 			fprintf(f, "%.1f %.1f\n", ContourTab.tab[j].tab[i].x, ContourTab.tab[j].tab[i].y);
 		}
-
 	}
 }
 
 
 // Il faut changer les boucles pour ajouter le gestion du TTV_Contour a la place du TTV_point
 
-/*
+
 void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour ContourTab, char ModeEcriture){
 	#define RESOLUTION 100
-	int i;
+	int i, j;
 	FILE* f = fopen(nomDeFichier, "w");
 	fprintf(f, "%%!PS-Adobe-3.0 EPSF-3.0\n");
 	fprintf(f, "%%%%BoundingBox: %d %d %i %i\n\n", -25, -25, (I.L)*RESOLUTION+25, (I.H)*RESOLUTION+25);
-	// On place le point de depart avec moveto
-	fprintf(f, "%f %f moveto\n\n", ContourTab.tab[0].x*RESOLUTION, (I.H-ContourTab.tab[0].y)*RESOLUTION);
-	// On place tous les points successivements avec un for, on place les points en options avec un if
-	for (i=1; i<ContourTab.nb; i++){
-		fprintf(f, "%f %f lineto\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+
+	for (j=0; j<ContourTab.nb; j++){
+		// On place le point de depart avec moveto
+		fprintf(f, "%f %f moveto\n", ContourTab.tab[j].tab[0].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[0].y)*RESOLUTION);
+		// On place tous les points successivements avec un for, on place les points en options avec un if
+		for (i=1; i<ContourTab.tab[j].nb; i++){
+			fprintf(f, "%f %f lineto\n", ContourTab.tab[j].tab[i].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[i].y)*RESOLUTION);
+		}
+		fprintf(f, "\n");
 	}
+
+
 	fprintf(f, "0.5 0.85 0.5 setrgbcolor\n");
 	if (ModeEcriture == 'F'){
 		fprintf(f, "fill\n");
@@ -102,11 +106,12 @@ void enregistrer_TTV_Contour_EPS(char* nomDeFichier, Image I, TTV_Contour Contou
 	}
 
 	if (ModeEcriture == 'P'){
-		for (i=1; i<ContourTab.nb; i++){
-			fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[i].x*RESOLUTION, (I.H-ContourTab.tab[i].y)*RESOLUTION);
+		for (j=0; j<ContourTab.nb; j++){
+			for (i=1; i<ContourTab.tab[j].nb; i++){
+				fprintf(f, "newpath %f %f 5 0 360 arc fill\nclosepath\n", ContourTab.tab[j].tab[i].x*RESOLUTION, (I.H-ContourTab.tab[j].tab[i].y)*RESOLUTION);
+			}
 		}
 	}
 
 	fprintf(f, "\nshowpage\n");
 }
-*/

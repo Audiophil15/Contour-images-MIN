@@ -185,8 +185,8 @@ void ecrire_image(Image I)
 Image creer_image_masque(Image image){
 	Image masque = creer_image(image.L, image.H);
 	int i, j;
-	for (i=0; i<image.L; i++){
-		for (j=0; j<image.H; j++){
+	for (i=1; i<=image.L; i++){
+		for (j=1; j<=image.H; j++){
 			if (get_pixel_image(image, i, j)==NOIR && get_pixel_image(image, i, j-1)==BLANC){
 				masque.tab[INDICE_PIXEL(image,
 				i, j)] = NOIR;

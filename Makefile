@@ -37,8 +37,7 @@ INCLUDEOPTS = -I$(INCDIR)
 COMPILOPTS = -g -Wall $(INCLUDEOPTS)
 
 # liste des executables
-EXECUTABLES = test_image_pbm testShapeTools
-
+EXECUTABLES = Contour
 
 #############################################################################
 # definition des regles
@@ -70,12 +69,6 @@ image_pbm.o : image_pbm.c image_pbm.h types_macros.h
 	@echo "---------------------------------------------"
 	$(CC) -c $(COMPILOPTS) $<
 
-test_image_pbm.o : test_image_pbm.c image_pbm.h types_macros.h
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Compilation du module test_image"
-	@echo "---------------------------------------------"
-	$(CC) -c $(COMPILOPTS) $<
 
 testShapeTools.o : testShapeTools.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h
 	@echo ""
@@ -85,17 +78,13 @@ testShapeTools.o : testShapeTools.c shapeTools.h image_pbm.h geometrie2D.h TTVpo
 	$(CC) -c $(COMPILOPTS) $<
 
 Contour.o : Contour.c shapeTools.h image_pbm.h geometrie2D.h TTVpoint.h TTVcontour.h
+	$(CC) -c $(COMPILOPTS) $<
+
 TTVpoint.o : geometrie2D.h
 
 ########################################################
 # regles explicites de creation des executables
 
-test_image_pbm : test_image_pbm.o image_pbm.o
-	@echo ""
-	@echo "---------------------------------------------"
-	@echo "Creation de l'executable "$@
-	@echo "---------------------------------------------"
-	$(CC) $^ $(LDOPTS) -o $@
 
 testShapeTools : testShapeTools.o image_pbm.o shapeTools.o geometrie2D.o TTVpoint.o
 	$(CC) $^ $(LDOPTS) -o $@
